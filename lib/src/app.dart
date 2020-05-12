@@ -7,6 +7,16 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       builder: ExtendedNavigator<Router>(router: Router(),),
+      theme: ThemeData(
+        primarySwatch: Colors.pink,
+        primaryColor: Colors.pink,
+        inputDecorationTheme: InputDecorationTheme(
+          focusColor: Colors.teal,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+          )
+        )
+      ),
     );
   }
 }
