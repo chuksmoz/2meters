@@ -9,6 +9,7 @@ import 'package:two_meters/src/infrastructure/core/firebase_injectable_module.da
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:two_meters/src/infrastructure/auth/auth_repository.dart';
 import 'package:two_meters/src/domain/auth/i_auth_repository.dart';
+import 'package:two_meters/src/application/auth/sign_up_form/sign_up_form_bloc.dart';
 import 'package:two_meters/src/application/auth/auth_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -17,6 +18,7 @@ void $initGetIt(GetIt g, {String environment}) {
   g.registerLazySingleton<FirebaseAuth>(
       () => firebaseInjectableModule.firebaseAuth);
   g.registerLazySingleton<Firestore>(() => firebaseInjectableModule.firestore);
+  g.registerFactory<SignUpFormBloc>(() => SignUpFormBloc(g<IAuthRepository>()));
   g.registerFactory<AuthBloc>(() => AuthBloc(g<IAuthRepository>()));
 
   //Register prod Dependencies --------
