@@ -4,4 +4,6 @@ import 'package:two_meters/src/domain/user/user.dart';
 
 abstract class IAuthRepository {
   Future<Either<AuthFailure, Unit>> registerUser(User user);
+  Future<Option<User>> getSignedInUser();
+  Future<void> signOut();
 }

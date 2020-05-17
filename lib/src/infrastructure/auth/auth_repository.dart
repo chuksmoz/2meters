@@ -1,11 +1,16 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:injectable/injectable.dart';
 import 'package:two_meters/src/domain/auth/auth_failure.dart';
 import 'package:two_meters/src/domain/auth/i_auth_repository.dart';
 import 'package:two_meters/src/domain/user/user.dart';
 import 'package:two_meters/src/infrastructure/user/create_user_dto.dart';
 
+@prod
+@lazySingleton
+@RegisterAs(IAuthRepository)
+@injectable
 class AuthRepository implements IAuthRepository{
   final FirebaseAuth _firebaseAuth;
   
@@ -36,4 +41,24 @@ class AuthRepository implements IAuthRepository{
         return left(AuthFailure.serverError());
       }
 
-  }}
+  }
+
+  @override
+  Future<Option<User>> getSignedInUser() {
+    var user = User.empty();
+    return _firebaseAuth.currentUser().then((value){
+      user = user.copyWith(id: value.uid);
+      return optionOf(user);
+    });
+  }
+
+  @override
+  Future<void> signOut() async {
+    return Future.wait([
+      //_googleSignIn.signOut(),
+      _firebaseAuth.signOut(),
+    ]);
+  }
+
+   
+}
